@@ -1,0 +1,11 @@
+fastapi
+uvicorn
+openai
+tinydb
+gunicorn
+uvloop
+httptools
+python-dotenv
+google-auth
+requests
+async-timeout
