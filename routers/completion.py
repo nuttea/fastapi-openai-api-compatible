@@ -123,7 +123,7 @@ async def _resp_async_generator(messages: List[Message], model: str, max_tokens:
         yield f"data: {json.dumps(current_response)}\n\n"
         #print(f"data: {json.dumps(chunk)}")
         #yield f"data: {json.dumps(chunk)}\n\n"
-        await asyncio.sleep(0.100)
+        await asyncio.sleep(0.200)
 
     #print("data: [DONE]")
     yield "data: [DONE]\n\n"
