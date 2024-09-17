@@ -82,7 +82,6 @@ async def _resp_async_generator(messages: List[Message], model: str, max_tokens:
         stream=True,
     )
 
-    last_chunk = None
     usage = None
 
     # Iterate over the response synchronously
