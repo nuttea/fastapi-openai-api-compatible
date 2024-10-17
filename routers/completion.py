@@ -62,6 +62,19 @@ def verify_api_key(api_key: str = Depends(api_key_header)):
         raise HTTPException(status_code=403, detail="Could not validate API key")
     print(f"API key validated: {api_key}")
 
+    # Check and refresh credential if needed
+    global creds, auth_req, client
+    if creds.expired:
+        print("Credentials are expired, refreshing...")
+        creds.refresh(auth_req)
+        client = OpenAI(
+            base_url = BASE_URL,
+            api_key = creds.token
+            )
+        print("Credentials refreshed successfully.")
+    else:
+        print("Credentials are still valid.")
+
 async def _resp_async_generator(messages: List[Message], model: str, max_tokens: int, temperature: float):
     """Asynchronous generator for streaming chat completions.
 
@@ -141,6 +154,8 @@ async def chat_completions(request: ChatCompletionRequest):
     Raises:
         HTTPException: If no messages are provided in the request or if there is an error processing the request.
     """
+
+    # Send requests
     if request.messages:
         print(f"Request: {request}")
         if request.stream:
@@ -189,6 +204,19 @@ async def list_models():
             "object": "model",
             "created": 1686935002,
             "owned_by": "google"
-        }
+        },
+        {
+            "id": "google/gemini-1.5-flash-002",
+            "object": "model",
+            "created": 1686935002,
+            "owned_by": "google"
+        },
+        {
+            "id": "google/gemini-1.5-pro-002",
+            "object": "model",
+            "created": 1686935002,
+            "owned_by": "google"
+        },
+        
     ]
     return {"object": "list", "data": models}
